@@ -2,7 +2,7 @@ refine-mesh
 ===========
 Iterative mesh refinement based on the technique in
 
-M. Botsch, L. Kobbelt. 2004 "[A Remeshing Approach to Multiresolution Modeling](http://www.researchgate.net/publication/221316497_A_Remeshing_Approach_to_Multiresolution_Modeling)" EUROGRAPHICS 2004
+* M. Botsch, L. Kobbelt. 2004 "[A Remeshing Approach to Multiresolution Modeling](http://www.researchgate.net/publication/221316497_A_Remeshing_Approach_to_Multiresolution_Modeling)" EUROGRAPHICS 2004
 
 # Example
 

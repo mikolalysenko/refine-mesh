@@ -30,25 +30,25 @@ function refinePackedMesh(mesh, edgeLength, numIters) {
 
   for(var i=0; i<numIters; ++i) {
     splitEdges(mesh, splitBound)
-    collapseEdges(mesh, collapseBound)
 
-    //Recompute topological indices
+    //collapseEdges(mesh, collapseBound)
+
     corners = realloc(corners, 3 * mesh.numCells)
     valence = realloc(valence, mesh.numVerts)
     topoIndex(mesh.numCells, mesh.cells, corners, mesh.numVerts, valence)
 
     flipEdges(mesh.numCells, mesh.cells, corners, mesh.numVerts, valence)
 
-    smoothVerts(mesh)
+    smoothVerts(mesh, valence)
   }
 
   pool.free(corners)
   pool.free(valence)
 }
 
-function refineMesh(cells, positions, edgeLength, numIters) {
+function refineMesh(cells, positions, normals, edgeLength, numIters) {
   //Pack mesh data
-  var mesh = createMesh(cells, positions)
+  var mesh = createMesh(cells, positions, normals)
 
   //Run refinement
   refinePackedMesh(mesh, edgeLength, numIters)

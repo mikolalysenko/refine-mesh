@@ -3,13 +3,14 @@
 var tape = require('tape')
 var indexTopology = require('../lib/topology')
 var bunny = require('bunny')
+var normals = require('normals').vertexNormals
 var createMesh = require('../lib/mesh')
 var flipEdges = require('../lib/flip-edges')
 var splitEdges = require('../lib/split-edges')
 
 tape('bunny-flips', function(t) {
 
-  var bmesh   = createMesh(bunny.cells, bunny.positions)
+  var bmesh   = createMesh(bunny.cells, bunny.positions, normals(bunny.cells, bunny.positions))
 
   splitEdges(bmesh, 0)
   var corners = new Array(bmesh.numCells*3)
