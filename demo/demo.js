@@ -19,8 +19,8 @@ function mkVerts(count) {
 }
 
 viewer.on('viewer-init', function() {
-  var vnormals = normals.vertexNormals(bunny.cells, bunny.positions)
-  var data = refineMesh(bunny.cells, bunny.positions, vnormals, 0.001, 3)
+  var data = bunny
+  data.normals = normals.vertexNormals(bunny.cells, bunny.positions)
   meshes.push(viewer.createMesh({
     cells: data.cells,
     positions: data.positions,
@@ -36,11 +36,28 @@ viewer.on('viewer-init', function() {
     lineWidth: 1,
     meshColor: [1, 1, 1, 1]
   }))
+
+  setInterval(function() {
+    data = refineMesh(data.cells, data.positions, data.normals, 0.1, 1)
+    meshes[0].update({
+      cells: data.cells,
+      positions: data.positions,
+      pointSize: 4,
+      meshColor: [0.5, 0.5, 0.5, 1],
+      useCellNormals: true,
+      cellNormals: normals.faceNormals(data.cells, data.positions)
+    })
+    meshes[1].update({
+      cells: sc.skeleton(data.cells, 1).concat(mkVerts(data.positions.length)),
+      positions: data.positions,
+      pointSize: 3,
+      lineWidth: 1,
+      meshColor: [1, 1, 1, 1]
+    })
+  }, 1000)
 })
 
 viewer.on('gl-render', function() {
-  //gl.enable(gl.BLEND)
-  //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
   meshes.forEach(function(mesh) {
     mesh.draw()
   })
