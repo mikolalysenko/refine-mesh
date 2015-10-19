@@ -12,6 +12,7 @@ var splitEdges    = require('./lib/split-edges')
 var collapseEdges = require('./lib/collapse-edges')
 var flipEdges     = require('./lib/flip-edges')
 var smoothVerts   = require('./lib/smooth-verts')
+var calcNormals   = require('./lib/calc-normals')
 
 function realloc(array, capacity) {
   if(array.length >= capacity) {
@@ -27,11 +28,10 @@ function refinePackedMesh(mesh, edgeLength, numIters) {
 
   var corners = pool.mallocInt32(nextPow2(6 * mesh.numCells))
   var valence = pool.mallocInt32(nextPow2(2 * mesh.numVerts))
-
   for(var i=0; i<numIters; ++i) {
     splitEdges(mesh, splitBound)
 
-    //collapseEdges(mesh, collapseBound)
+    collapseEdges(mesh, collapseBound, splitBound)
 
     corners = realloc(corners, 3 * mesh.numCells)
     valence = realloc(valence, mesh.numVerts)
@@ -39,7 +39,9 @@ function refinePackedMesh(mesh, edgeLength, numIters) {
 
     flipEdges(mesh.numCells, mesh.cells, corners, mesh.numVerts, valence)
 
-    smoothVerts(mesh, valence)
+    //smoothVerts(mesh)
+
+    //calcNormals(mesh)
   }
 
   pool.free(corners)
