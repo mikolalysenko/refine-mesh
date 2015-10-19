@@ -17,7 +17,7 @@ npm i refine-mesh
 
 # API
 
-#### `var mesh = require('refine-mesh')(cells, positions, normals, length[, maxIter])`
+#### `var mesh = require('refine-mesh')(cells, positions, normals, length)`
 Applies iterative mesh refinement to a cell complex
 
 * `cells` are the faces of the mesh
