@@ -21,10 +21,7 @@ function mkVerts(count) {
 viewer.on('viewer-init', function() {
   var data = bunny
   data.normals = normals.vertexNormals(bunny.cells, bunny.positions)
-  data = refineMesh(data.cells, data.positions, data.normals, {
-    edgeLength: 0.1,
-    maxIters: 20
-  })
+  data = refineMesh(data.cells, data.positions, data.normals, {edgeLength: 0.1})
   meshes.push(viewer.createMesh({
     cells: data.cells,
     positions: data.positions,

@@ -9,55 +9,60 @@ var splitEdges    = require('./lib/split-edges')
 var collapseEdges = require('./lib/collapse-edges')
 var flipEdges     = require('./lib/flip-edges')
 var smoothVerts   = require('./lib/smooth-verts')
-var calcNormals   = require('./lib/calc-normals')
 
-function refinePackedMesh(
-    mesh,
-    edgeLength,
-    smoothRate,
-    maxIters,
-    maxSplitIters,
-    maxCollapseIters,
-    maxFlipIters,
-    smoothIters) {
+function refinePackedMesh(mesh, options) {
+  options = options || {}
 
+  var edgeLength    = options.edgeLength    || avgEdgeLength(mesh)
+  var smoothRate    = options.smoothRate    || 0.95
   smoothRate = Math.max(Math.min(smoothRate, 1.0), 0.001)
 
   var splitBound    = Math.pow(1.25 * edgeLength, 2)
   var collapseBound = Math.pow(0.75 * edgeLength, 2)
-  var smoothBound   = Math.pow(0.01 * edgeLength / smoothRate, 2)
+
+  var maxIters      = options.maxIters      || 5
+  var splitIters    = options.splitIters    || 10
+  var collapseIters = options.collapseIters || 10
+  var flipIters     = options.flipIters     || 10
+  var smoothIters   = options.smoothIters   || 20
+
+  var minSplit    = Math.max(options.minSplit || 0, 0)|0
+  var minCollapse = Math.max(options.minCollapse || 0, 0)|0
+  var minFlip     = Math.max(options.minFlip || 0, 0)|0
+  var minSmooth   = Math.pow(Math.max(options.minSmooth ||
+                        (0.05 * edgeLength / smoothRate), 0), 2)
 
   var changed = true
   for(var i=0; changed && i<maxIters; ++i) {
     changed = false
-    changed = splitEdges(mesh, splitBound, maxSplitIters) || changed
-    changed = collapseEdges(mesh,
+    changed = splitEdges(
+                  mesh,
+                  splitBound,
+                  splitIters,
+                  minSplit) || changed
+    changed = collapseEdges(
+                  mesh,
                   collapseBound,
                   splitBound,
-                  maxCollapseIters) || changed
-    changed = flipEdges(mesh, maxFlipIters) || changed
-    changed = smoothVerts(mesh, smoothIters, smoothBound, smoothRate) || changed
+                  collapseIters,
+                  minCollapse) || changed
+    changed = flipEdges(
+                  mesh,
+                  flipIters,
+                  minFlip) || changed
+    changed = smoothVerts(
+                  mesh,
+                  smoothRate,
+                  smoothIters,
+                  minSmooth) || changed
   }
 }
 
 function refineMesh(cells, positions, normals, options) {
-  options = options || {}
-
-  //Pack mesh data
   var mesh = createMesh(cells, positions, normals)
 
-  //Run refinement
-  refinePackedMesh(
-    mesh,
-    options.edgeLength    || avgEdgeLength(mesh),
-    options.smoothRate    || 0.95,
-    options.maxIters      || 5,
-    options.splitIters    || 10,
-    options.collapseIters || 10,
-    options.flipIters     || 10,
-    options.smoothIters   || 20)
+  refinePackedMesh(mesh, options)
 
-  //Unpack working mesh data
   var result = mesh.unpack()
   mesh.dispose()
   return result
