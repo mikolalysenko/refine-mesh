@@ -10,7 +10,7 @@
     "ndarray-sort": "^1.0.1",
     "ndarray": "^1.0.18",
     "next-pow-2": "^1.0.0",
-    "typedarray-pool": "^1.1.0",
+    "typedarray-pool": "^1.1.0"
   },
   "devDependencies": {
     "mesh-viewer": "^1.0.0",
