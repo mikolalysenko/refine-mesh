@@ -1,0 +1,41 @@
+{
+  "name": "refine-mesh",
+  "version": "1.0.0",
+  "description": "Iterative mesh refinement",
+  "main": "refine.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "ndarray-sort": "^1.0.1",
+    "ndarray": "^1.0.18",
+    "next-pow-2": "^1.0.0",
+    "typedarray-pool": "^1.1.0",
+  },
+  "devDependencies": {
+    "mesh-viewer": "^1.0.0",
+    "bunny": "^1.0.1",
+    "normals": "^1.0.1",
+    "simplicial-complex": "^1.0.0",
+    "snowden": "^1.0.1",
+    "tape": "^4.2.1"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikolalysenko/refine-mesh.git"
+  },
+  "keywords": [
+    "mesh",
+    "refinement",
+    "iterative"
+  ],
+  "author": "Mikola Lysenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikolalysenko/refine-mesh/issues"
+  },
+  "homepage": "https://github.com/mikolalysenko/refine-mesh#readme"
+}
