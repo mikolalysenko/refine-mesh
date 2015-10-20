@@ -1,6 +1,6 @@
 {
   "name": "refine-mesh",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Iterative mesh refinement",
   "main": "refine.js",
   "directories": {
